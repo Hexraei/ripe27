@@ -332,16 +332,11 @@ tr.grp:hover th { background: var(--ink); }
 
 /* ================= polish pass: graphics, structure, motion ================= */
 
-/* hero: blueprint grid and a slow gear train, both behind the text */
+/* hero: faint blueprint grid behind the text */
 .hero-art { position: absolute; inset: 0; z-index: -1; pointer-events: none; color: var(--brass-light); overflow: hidden;
   background-image: linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px);
   background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 80% 90% at 75% 40%, #000 20%, transparent 75%); }
-.gears { position: absolute; right: -40px; top: 28px; width: min(640px, 62vw); opacity: .16; }
-.gear-a, .gear-b { transform-box: fill-box; transform-origin: center; }
-.gear-a { animation: spin 140s linear infinite; }
-.gear-b { animation: spin 82s linear infinite reverse; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 880px) { .gears { top: auto; bottom: -30px; right: -90px; width: 520px; opacity: .22; } }
 
 /* hero headline: lines rise in sequence, then the dimension line and date follow */
 .hero h1 span { opacity: 0; animation: rise .8s var(--ease) forwards; }
@@ -407,7 +402,7 @@ tr.grp:hover th { background: var(--ink); }
 .tbl-wrap tbody tr { transition: background .2s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gear-a, .gear-b, .jubilee svg circle:first-child,
+  .jubilee svg circle:first-child,
   .hero h1 span { opacity: 1; }
   [data-stagger] > * { opacity: 1; transform: none; }
   .fig.reveal-img img { clip-path: none; transform: none; }
