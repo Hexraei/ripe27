@@ -222,8 +222,8 @@ ul { padding-left: 1.1em; }
 .split { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
 .split.rev { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
 .fig { margin: 0; position: relative; }
-.fig img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; box-shadow: 14px 14px 0 -2px var(--paper), 14px 14px 0 0 var(--red); }
-.fig figcaption { font: 500 .8rem/1.4 var(--f-display); color: var(--muted); margin-top: 22px; }
+.fig img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.fig figcaption { font: 500 .8rem/1.4 var(--f-display); color: var(--muted); margin-top: 10px; }
 .jubilee { position: absolute; right: -22px; top: -22px; width: 112px; height: 112px; background: var(--ink); border-radius: 50%; display: grid; place-items: center; border: 3px solid var(--brass-light); }
 .jubilee svg { width: 96px; height: 96px; }
 @media (max-width: 900px) { .split, .split.rev { grid-template-columns: 1fr; gap: 44px; } .jubilee { right: 8px; top: -30px; } }
