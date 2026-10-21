@@ -17,26 +17,37 @@
     tick();
   }
 
-  // Dates scale: position by date, mark what has closed and what is next.
-  document.querySelectorAll(".scale").forEach(function (list) {
-    var start = new Date("2026-07-01"), end = new Date("2027-02-10");
-    var pct = function (d) { return ((d - start) / (end - start)) * 100; };
+  // Dates scale: place deadlines on a real calendar axis, fill it to today, say what is closed or next.
+  document.querySelectorAll(".scale-wrap").forEach(function (wrap) {
+    var start = new Date("2026-07-01T00:00:00+05:30"), end = new Date("2027-02-10T00:00:00+05:30");
+    var pct = function (d) { return Math.max(0, Math.min(100, ((d - start) / (end - start)) * 100)); };
+    var months = wrap.querySelector(".months");
+    var names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    for (var d = new Date(start); d < end; d = new Date(d.getFullYear(), d.getMonth() + 1, 1)) {
+      var mk = document.createElement("div");
+      mk.className = "mk";
+      mk.style.setProperty("--x", pct(d) + "%");
+      mk.innerHTML = "<b>" + names[d.getMonth()] + (d.getMonth() === 6 || d.getMonth() === 0 ? " " + d.getFullYear() : "") + "</b>";
+      months.appendChild(mk);
+    }
     var next = null;
-    list.querySelectorAll("li[data-date]").forEach(function (li) {
-      var d = new Date(li.dataset.date + "T23:59:59+05:30");
-      li.style.setProperty("--x", pct(d) + "%");
+    wrap.querySelectorAll("li[data-date]").forEach(function (li) {
+      var when = new Date(li.dataset.date + "T23:59:59+05:30");
+      var left = Math.ceil((when - now) / DAY);
+      li.style.setProperty("--x", pct(when) + "%");
       var s = li.querySelector(".s");
-      if (li.classList.contains("is-event")) { s.textContent = d > now ? "Upcoming" : "Held"; return; }
-      if (d < now) { li.classList.add("is-past"); s.textContent = "Closed"; }
-      else if (!next) { next = li; li.classList.add("is-next"); s.textContent = "Next deadline"; }
+      if (li.classList.contains("is-event")) { s.textContent = left > 0 ? left + " days to go" : "Held"; return; }
+      if (when < now) { li.classList.add("is-past"); s.textContent = "Closed"; }
+      else if (!next) { next = li; li.classList.add("is-next"); s.textContent = "Next, in " + left + " days"; }
       else s.textContent = "Open";
     });
-    if (list.dataset.today !== undefined && now > start && now < end) {
+    if (wrap.dataset.today !== undefined && now > start && now < end) {
+      wrap.style.setProperty("--p", pct(now) + "%");
       var m = document.createElement("div");
       m.className = "today";
       m.style.setProperty("--x", pct(now) + "%");
-      m.innerHTML = "<span>Today</span>";
-      list.appendChild(m);
+      m.innerHTML = "<span>Today, " + now.getDate() + " " + names[now.getMonth()] + "</span>";
+      wrap.appendChild(m);
     }
   });
 
@@ -51,12 +62,43 @@
     el.textContent = early ? "Early-bird fees apply until 15 October 2026." : "Early-bird registration closed on 15 October 2026. Late fees apply until 15 December 2026.";
   });
 
-  // One gentle reveal for tables and the dates scale.
-  var items = document.querySelectorAll(".reveal");
+  // Entrances: one observer for tables, the dates scale, ruled headings, photos and staggered lists.
+  document.querySelectorAll("[data-stagger]").forEach(function (box) {
+    Array.prototype.forEach.call(box.children, function (c, i) { c.style.setProperty("--d", i * 70 + "ms"); });
+  });
+  document.querySelectorAll(".scale-wrap li").forEach(function (li, i) { li.style.setProperty("--d", 500 + i * 160 + "ms"); });
+
+  var countUp = function (el) {
+    var n = +el.dataset.count, t0 = null;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var step = function (ts) {
+      t0 = t0 || ts;
+      var k = Math.min((ts - t0) / 1100, 1);
+      el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = "0";
+    requestAnimationFrame(step);
+  };
+
+  var items = document.querySelectorAll(".reveal, .ruled, .reveal-img, [data-stagger]");
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        e.target.querySelectorAll("[data-count]").forEach(countUp);
+        io.unobserve(e.target);
+      });
     }, { threshold: 0.15 });
     items.forEach(function (el) { io.observe(el); });
   } else items.forEach(function (el) { el.classList.add("in"); });
+
+  // Hero photo drifts slower than the page.
+  var heroImg = document.querySelector(".hero-img");
+  if (heroImg && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    addEventListener("scroll", function () {
+      if (scrollY < 900) heroImg.style.transform = "translateY(" + scrollY * 0.18 + "px)";
+    }, { passive: true });
+  }
 })();
