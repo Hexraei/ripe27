@@ -402,7 +402,7 @@ tr.grp:hover th { background: var(--ink); }
 .tbl-wrap tbody tr { transition: background .2s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .jubilee svg circle:first-child,
+  .jubilee svg circle:first-child { animation: none; }
   .hero h1 span { opacity: 1; }
   [data-stagger] > * { opacity: 1; transform: none; }
   .fig.reveal-img img { clip-path: none; transform: none; }
