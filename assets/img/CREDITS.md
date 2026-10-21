@@ -1,0 +1,4 @@
+- `mit-entrance.jpg` — MIT ENTRANCE.jpg — CC BY-SA 4.0 — Aswin c — https://commons.wikimedia.org/wiki/File:MIT_ENTRANCE.jpg
+- `mit-admin-block.jpg` — Administrative block, Madras institute of technology.jpg — CC0 — Anna university — https://commons.wikimedia.org/wiki/File:Administrative_block,_Madras_institute_of_technology.jpg
+- `chennai-marina.jpg` — Marina beach, Chennai aerial view.jpg — CC BY-SA 4.0 — Saiphani02 — https://commons.wikimedia.org/wiki/File:Marina_beach,_Chennai_aerial_view.jpg
+- `anna-univ-kbc.jpg` — Anna University K B Chandrasekhar Research Centre (Chennai, India) 2014.jpg — CC BY-SA 4.0 — Xaminka — https://commons.wikimedia.org/wiki/File:Anna_University_K_B_Chandrasekhar_Research_Centre_(Chennai,_India)_2014.jpg
